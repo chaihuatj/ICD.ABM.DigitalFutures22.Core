@@ -1,27 +1,24 @@
 ﻿using ABxM.Core.Agent;
 using ABxM.Core.Behavior;
-using ICD.ABM.DigitalFutures22.Core.AgentSystem;
+using ABxM.PrinciaplStrips.Core.AgentSystem;
 using Rhino.Geometry;
 using System;
 using System.Collections.Generic;
 
-
-
-
-namespace ICD.ABM.DigitalFutures22.Core.Agent
+namespace ABxM.PrinciaplStrips.Core.Agent
 {
     public class RailAgent : AgentBase
     {
         public Point2d UV = Point2d.Unset;
         public double[] t = new double[2] { double.NaN, double.NaN };
-        
+
         public Point2d startUV;
 
         public bool isFixed = false;
 
         public Curve GuideCurve;
         public List<RailAgent> SameGuideCurce = new List<RailAgent>();
-        public RailAgent[] Neighbors = new RailAgent[2] {null,null};
+        public RailAgent[] Neighbors = new RailAgent[2] { null, null };
 
         public double CurvatureAccuracy = 20;
         public int alg = 3;
@@ -37,13 +34,13 @@ namespace ICD.ABM.DigitalFutures22.Core.Agent
             this.UV = this.startUV = uvParameter;
             this.Behaviors = behaviors;
         }
-        
+
         public override void Reset()
         {
             this.Moves.Clear();
             this.UV = this.startUV;
             this.isFixed = false;
-            this.t=new double[2] { double.NaN, double.NaN };
+            this.t = new double[2] { double.NaN, double.NaN };
 
             this.Neighbors = new RailAgent[2] { null, null };
             this.SameGuideCurce.Clear();
@@ -69,7 +66,7 @@ namespace ICD.ABM.DigitalFutures22.Core.Agent
 
             foreach (BehaviorBase behavior in this.Behaviors)
                 behavior.Execute(this);
- 
+
         }
 
         public override void PostExecute()
@@ -111,7 +108,7 @@ namespace ICD.ABM.DigitalFutures22.Core.Agent
         {
             foreach (Curve guideCurve in (this.AgentSystem as RailAgentSystem).SystemCurves)
             {
-                double tPara=new double();
+                double tPara = new double();
                 Point3d position = (this.AgentSystem as RailAgentSystem).SystemSurface.PointAt(this.UV.X, this.UV.Y);
                 guideCurve.Domain = new Interval(0.0, 1.0);
                 guideCurve.ClosestPoint(position, out tPara);
@@ -123,9 +120,9 @@ namespace ICD.ABM.DigitalFutures22.Core.Agent
                 {
                     this.GuideCurve = guideCurve;
                     this.t = new double[2] { double.NaN, double.NaN };
-                    this.t[0]=tPara;
+                    this.t[0] = tPara;
 
-                    if (tPara<=0.01 || tPara>=0.99) this.isFixed = true;
+                    if (tPara <= 0.01 || tPara >= 0.99) this.isFixed = true;
                 }
 
             }
@@ -210,16 +207,16 @@ namespace ICD.ABM.DigitalFutures22.Core.Agent
 
 
             curvatureC.Domain = new Interval(0.0, 1.0);
-            Curve[] curvatureCPull=curvatureC.PullToBrepFace(((this.AgentSystem as RailAgentSystem).SystemSurface.ToBrep()).Faces[0],0.001);
-            if (curvatureCPull.Length > 0) 
-            { 
-                var CCIntEvents = Rhino.Geometry.Intersect.Intersection.CurveCurve(this.GuideCurve, curvatureCPull[0], 5,5);
+            Curve[] curvatureCPull = curvatureC.PullToBrepFace(((this.AgentSystem as RailAgentSystem).SystemSurface.ToBrep()).Faces[0], 0.001);
+            if (curvatureCPull.Length > 0)
+            {
+                var CCIntEvents = Rhino.Geometry.Intersect.Intersection.CurveCurve(this.GuideCurve, curvatureCPull[0], 5, 5);
 
                 if (CCIntEvents != null)
                 {
                     for (int j = 0; j < CCIntEvents.Count; j++)
                     {
-                        if (Math.Abs(this.t[0] - CCIntEvents[j].ParameterA) > 0.001) { this.t[1] = CCIntEvents[j].ParameterA;  }
+                        if (Math.Abs(this.t[0] - CCIntEvents[j].ParameterA) > 0.001) { this.t[1] = CCIntEvents[j].ParameterA; }
                     }
 
                 }
@@ -232,20 +229,20 @@ namespace ICD.ABM.DigitalFutures22.Core.Agent
             this.Neighbors = new RailAgent[2] { null, null };
 
             double thisT = this.t[0];
-            int nextT=-1 ;
-            int beforeT=-1;
+            int nextT = -1;
+            int beforeT = -1;
             List<double> tSList = new List<double>();
             tSList.Add(thisT);
             foreach (RailAgent agentS in this.SameGuideCurce) { double[] dt = agentS.t; tSList.AddRange(dt); }
 
-            tSList.Sort((x,y) => x.CompareTo(y));
+            tSList.Sort((x, y) => x.CompareTo(y));
 
             if (tSList.Contains(thisT))
             {
-                int thisIndex=tSList.IndexOf(thisT);
-                if(thisIndex == 0)    {  nextT = thisIndex + 1; }
-                if(thisIndex==tSList.Count-1){ beforeT = thisIndex - 1; }
-                if(thisIndex !=0 && thisIndex !=tSList.Count-1) { nextT = thisIndex + 1; beforeT = thisIndex - 1; }
+                int thisIndex = tSList.IndexOf(thisT);
+                if (thisIndex == 0) { nextT = thisIndex + 1; }
+                if (thisIndex == tSList.Count - 1) { beforeT = thisIndex - 1; }
+                if (thisIndex != 0 && thisIndex != tSList.Count - 1) { nextT = thisIndex + 1; beforeT = thisIndex - 1; }
             }
 
             foreach (RailAgent railA in SameGuideCurce)
@@ -253,13 +250,13 @@ namespace ICD.ABM.DigitalFutures22.Core.Agent
                 List<double> tailAT = new List<double>();
                 tailAT.AddRange(railA.t);
 
-                if (nextT !=-1 && tailAT.Contains(tSList[nextT])) {this.Neighbors[1] = railA; }
-                if (beforeT !=-1 && tailAT.Contains(tSList[beforeT])) { this.Neighbors[0] = railA; }
+                if (nextT != -1 && tailAT.Contains(tSList[nextT])) { this.Neighbors[1] = railA; }
+                if (beforeT != -1 && tailAT.Contains(tSList[beforeT])) { this.Neighbors[0] = railA; }
             }
 
-            if (thisT <=0.001) this.Neighbors[0] = null;
+            if (thisT <= 0.001) this.Neighbors[0] = null;
             if (thisT >= 0.999) this.Neighbors[1] = null;
-            
+
         }
 
         public List<Point3d> SampleCurvature(double accuracy, bool max, double angle, int alg)

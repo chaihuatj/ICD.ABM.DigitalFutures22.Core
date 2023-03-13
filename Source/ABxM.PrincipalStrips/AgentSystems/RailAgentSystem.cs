@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using ABxM.Core.Agent;
+﻿using ABxM.Core.Agent;
 using ABxM.Core.AgentSystem;
-using ICD.ABM.DigitalFutures22.Core.Agent;
+using ABxM.PrinciaplStrips.Core.Agent;
 using Rhino.Geometry;
+using System.Collections.Generic;
 
-namespace ICD.ABM.DigitalFutures22.Core.AgentSystem
+namespace ABxM.PrinciaplStrips.Core.AgentSystem
 {
     public class RailAgentSystem : AgentSystemBase
     {
-        public Surface SystemSurface= null;
+        public Surface SystemSurface = null;
         public List<Curve> SystemCurves = new List<Curve>();
         public List<double> moveDistances = new List<double>();
-        public double stopThreshold = 1/1000;
+        public double stopThreshold = 1 / 1000;
 
-        public RailAgentSystem(List<RailAgent> agents,double iStopThreshold)
+        public RailAgentSystem(List<RailAgent> agents, double iStopThreshold)
         {
             Agents = new List<AgentBase>();
             for (int i = 0; i < agents.Count; ++i)
@@ -42,7 +37,7 @@ namespace ICD.ABM.DigitalFutures22.Core.AgentSystem
             base.PreExecute();
             moveDistances = new List<double>();
 
-    }
+        }
 
         public override void Execute()
         {
@@ -59,15 +54,15 @@ namespace ICD.ABM.DigitalFutures22.Core.AgentSystem
 
         public override bool IsFinished()
         {
-            bool isF=false;
+            bool isF = false;
             double sumdis = new double();
-            if (moveDistances.Count > 0) 
+            if (moveDistances.Count > 0)
             {
                 foreach (double d in moveDistances)
                     sumdis += d;
-                if (sumdis < stopThreshold) isF= true;
+                if (sumdis < stopThreshold) isF = true;
             }
-            else isF=  false;
+            else isF = false;
             return isF;
         }
 

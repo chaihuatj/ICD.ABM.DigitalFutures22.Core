@@ -1,14 +1,10 @@
 ﻿using ABxM.Core.Agent;
 using ABxM.Core.AgentSystem;
-using ICD.ABM.DigitalFutures22.Core.Agent;
+using ABxM.PrinciaplStrips.Core.Agent;
 using Rhino.Geometry;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ICD.ABM.DigitalFutures22.Core.AgentSystem
+namespace ABxM.PrinciaplStrips.Core.AgentSystem
 {
     public class UmbilicalAgentSystem : AgentSystemBase
     {
