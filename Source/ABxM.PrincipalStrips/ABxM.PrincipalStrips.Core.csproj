@@ -5,7 +5,7 @@
     <Version>1.0</Version>
     <Title>ABxM.PrincipalStrips</Title>
     <Description>Description of ABxM.PrincipalStrips</Description>
-    <TargetExt>.gha</TargetExt>
+    <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   
   <ItemGroup>
