@@ -1,10 +1,10 @@
 ﻿using ABxM.Core.Agent;
 using ABxM.Core.Behavior;
-using ABxM.PrinciaplStrips.Core.AgentSystem;
+using ABxM.PrincipalStrips.Core.AgentSystem;
 using Rhino.Geometry;
 using System.Collections.Generic;
 
-namespace ABxM.PrinciaplStrips.Core.Agent
+namespace ABxM.PrincipalStrips.Core.Agent
 {
     public class UmbilicalAgent : AgentBase
     {

@@ -1,10 +1,10 @@
 ﻿using ABxM.Core.Agent;
 using ABxM.Core.AgentSystem;
-using ABxM.PrinciaplStrips.Core.Agent;
+using ABxM.PrincipalStrips.Core.Agent;
 using Rhino.Geometry;
 using System.Collections.Generic;
 
-namespace ABxM.PrinciaplStrips.Core.AgentSystem
+namespace ABxM.PrincipalStrips.Core.AgentSystem
 {
     public class RailAgentSystem : AgentSystemBase
     {
