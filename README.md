@@ -1,4 +1,3 @@
-
 <h2 align="center">Agent-based Principal Strips Modeling for Freeform Surfaces in Architecture</h2>
 
 Source code and Grasshopper implementation of ABxM Principal Strips. 
@@ -26,4 +25,3 @@ The principal curvature (PC) of a freeform surface, as an important indicator of
 3.  Copy the all files in `Examples\Referenced Assemblies\`to your Grasshopper library. Make sure to unblock all .dll and .gha files.
 
 `C:\Users\%UserName%\%Appdata%\Grasshopper\Libraries`
-
